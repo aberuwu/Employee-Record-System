@@ -16,13 +16,11 @@ Public Class frmMain
     Public Property dependentList As List(Of Dependent) = New List(Of Dependent)
     Public Property employeeCount As Integer = 0
     Public Property dependentCount As Integer = 0
-
     Public Property currEmpIndex As Integer = 0
 
     Private BOOK_SOURCE_XML As String
     Public closingNewEmp As Boolean = False
     Public closingNewDep As Boolean = False
-
     Public Property nodeIndex As TreeNode
 
     Private employeeNumber As String = ""
@@ -158,7 +156,6 @@ Public Class frmMain
 
         employeeList.Add(New Employee)
 
-
         employeeList(employeeCount).FirstName = firstName
         employeeList(employeeCount).LastName = lastName
         employeeList(employeeCount).DependentType = dependentType
@@ -214,8 +211,6 @@ Public Class frmMain
             Else
                 userSelectedNode.ToolTipText = "Other"
             End If
-
-
         Else
             editEmployeeRecordForm = New frmEditEmployee()
             currEmpIndex = empIndex
@@ -238,7 +233,6 @@ Public Class frmMain
             lblHiredDate.Text = employeeList(empIndex).HiredDate
             lblEmpType.Text = employeeList(empIndex).EmployeeType
 
-            'newNode.ToolTipText = employeeList(employeeCount).EmployeeNumber & " [" & employeeList(employeeCount).OfficeCubeLoc & "]"
         End If
     End Sub
 
@@ -247,10 +241,6 @@ Public Class frmMain
             MsgBox(tn.Text)
             RecursNodesRefresh(tn.Nodes)
         Next
-    End Sub
-
-    Private Sub tosbtnDelete_Click(sender As Object, e As EventArgs)
-
     End Sub
 
     Private Sub trvEmployeesDepend_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles trvEmployeesDepend.AfterSelect
@@ -395,7 +385,6 @@ Public Class frmMain
         lblPersonalEm.Text = employeeList(empIndex).PersonalEmail
         lblBirthDate.Text = employeeList(empIndex).BirthDate
         lblHiredDate.Text = employeeList(empIndex).HiredDate
-
     End Sub
 
     Private Sub tsbtnOpen_Click(sender As Object, e As EventArgs) Handles tsbtnOpen.Click
@@ -429,7 +418,6 @@ Public Class frmMain
 
     Private Sub tsbtnSave_Click(sender As Object, e As EventArgs) Handles tsbtnSave.Click
         Dim settings As XmlWriterSettings = New XmlWriterSettings()
-
         settings.Indent = True
         settings.IndentChars = "    "
 
@@ -473,7 +461,6 @@ Public Class frmMain
         tsbtnSave.Enabled = True
     End Sub
 
-
     Private Sub RecursNodesSaveToXml(ByVal NodeCollection As TreeNodeCollection, ByVal xmlWrite As XmlWriter)
         Dim tempDate As String
         Dim year As String
@@ -484,8 +471,6 @@ Public Class frmMain
         Dim formatedDate As String
 
         For Each tn As TreeNode In NodeCollection
-
-
             If employeeList(tn.Name).DependentType = "S" Or employeeList(tn.Name).DependentType = "C" _
             Or employeeList(tn.Name).DependentType = "O" Then
                 xmlWrite.WriteStartElement("dependent")
@@ -544,9 +529,7 @@ Public Class frmMain
         Next
     End Sub
 
-
     Private Sub loadXmlFile()
-
         employeeList.Clear()
         dependentList.Clear()
         trvEmployeesDepend.Nodes.Clear()
@@ -592,11 +575,7 @@ Public Class frmMain
                 employeeList(employeeCount).FirstName = reader("fname")
                 employeeList(employeeCount).LastName = reader("lname")
                 employeeList(employeeCount).MiddleName = reader("mname")
-
-
-
                 tempDate = reader("bdate")
-
 
                 If tempDate = "" Then
                     employeeList(employeeCount).BirthDate = tempDate
@@ -620,8 +599,6 @@ Public Class frmMain
                     month2 = month.Remove(2, 2)
                     day = tempDate.Remove(0, 6)
                     formatedDate = month2 & "/" & day & "/" & year
-
-
                     employeeList(employeeCount).HiredDate = formatedDate
                 End If
 
@@ -666,9 +643,7 @@ Public Class frmMain
                 employeeList.Add(New Employee)
                 employeeList(employeeCount).FirstName = reader("Subfname")
                 employeeList(employeeCount).LastName = reader("Sublname")
-
                 newNode = node.Nodes.Add(employeeCount, reader("Sublname" & ", " & "Subfname"))
-
                 dependentCount += 1
 
             ElseIf reader.Name = "dependent" AndAlso reader.NodeType = XmlNodeType.Element Then
@@ -678,8 +653,6 @@ Public Class frmMain
                 employeeList(employeeCount).LastName = reader("lname")
                 employeeList(employeeCount).DependentType = reader("type")
                 employeeList(employeeCount).MiddleName = reader("mname")
-
-
                 tempDate = reader("bdate")
 
                 If tempDate = "" Then
@@ -729,11 +702,9 @@ Public Class frmMain
             trvEmployeesDepend.AllowDrop = True
             DoDragDrop(e.Item, DragDropEffects.Move)
         End If
-
     End Sub
 
     Private Sub trvEmployeesDepend_DragEnter(sender As Object, e As DragEventArgs) Handles trvEmployeesDepend.DragEnter
-
         If currEmpIndex = 0 Or employeeList(currEmpIndex).DependentType = "S" Or employeeList(currEmpIndex).DependentType = "C" _
             Or employeeList(currEmpIndex).DependentType = "O" Then
             trvEmployeesDepend.AllowDrop = False
@@ -741,12 +712,10 @@ Public Class frmMain
             trvEmployeesDepend.AllowDrop = True
             e.Effect = DragDropEffects.Move
         End If
-
     End Sub
 
     Private Sub trvEmployeesDepend_DragDrop(sender As Object, e As DragEventArgs) Handles trvEmployeesDepend.DragDrop
         Dim newNode As TreeNode
-
         If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", False) Then
             Dim point As Point
             Dim destNode As TreeNode
@@ -764,7 +733,6 @@ Public Class frmMain
 
         End If
     End Sub
-
 
     'Getter functions
     Public Sub getEmpNum(empNum As String)
@@ -830,7 +798,6 @@ Public Class frmMain
     Private Sub testLists()
         For i As Integer = 0 To employeeCount - 1
             MsgBox("This is an employee: " & employeeList(i).EmployeeNumber)
-
         Next
 
         For i As Integer = 0 To dependentCount - 1
